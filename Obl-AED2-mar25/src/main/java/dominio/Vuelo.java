@@ -2,7 +2,7 @@ package dominio;
 
 import interfaz.TipoVuelo;
 
-public class Vuelo {
+public class Vuelo implements Comparable<Vuelo> {
     private Ciudad ciudadOrigen;
     private Ciudad ciudadDestino;
     private String codigoDeVuelo;
@@ -75,5 +75,16 @@ public class Vuelo {
 
     public void setTipoDeVuelo(TipoVuelo tipoDeVuelo) {
         this.tipoDeVuelo = tipoDeVuelo;
+    }
+
+    @Override
+    public int compareTo(Vuelo o) {
+        return this.codigoDeVuelo.compareTo(o.codigoDeVuelo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Vuelo vuelo = (Vuelo) obj;
+        return this.codigoDeVuelo.equals(vuelo.codigoDeVuelo);
     }
 }
