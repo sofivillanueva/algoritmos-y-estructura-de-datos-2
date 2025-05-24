@@ -1,6 +1,6 @@
-﻿package TAD.Lista;
+package TAD.Lista;
 
-public class Lista<T> implements ILista<T> {
+public class Lista<T extends Comparable<T>> implements ILista<T> {
     private Nodo<T> inicio;
     private Nodo<T> fin;
     private int cant;
@@ -18,6 +18,51 @@ public class Lista<T> implements ILista<T> {
     }
 
     @Override
+    public void insertarOrd(T dato) {
+        if (esVacia() || inicio.getDato().compareTo(dato) > 0) {
+            agregarInicio(dato);
+        } else {
+            if (fin.getDato().compareTo(dato) < 0) {
+                agregarFinal(dato);
+            } else {
+                Nodo<T> aux = inicio;
+                while (aux.getSig() != null && aux.getSig().getDato().compareTo(dato) < 0) {
+                    aux = aux.getSig();
+                }
+                Nodo<T> nuevo = new Nodo<>(dato);
+                nuevo.setSig(aux.getSig());
+                aux.setSig(nuevo);
+                cant++;
+            }
+        }
+    }
+
+    @Override
+    public void agregarInicio(T dato) {
+        Nodo<T> nuevo = new Nodo<>(dato);
+        if (esVacia()) {
+            inicio = nuevo;
+            fin = nuevo;
+        } else {
+            nuevo.setSig(inicio);
+            inicio = nuevo;
+        }
+        cant++;
+    }
+
+    @Override
+    public void agregarFinal(T dato) {
+        if (esVacia()) {
+            agregarInicio(dato);
+        } else {
+            Nodo<T> nuevo = new Nodo<>(dato);
+            fin.setSig(nuevo);
+            fin = nuevo;
+            cant++;
+        }
+    }
+
+    @Override
     public int largo() {
         return cant;
     }
@@ -25,72 +70,57 @@ public class Lista<T> implements ILista<T> {
     @Override
     public boolean existe(T dato) {
         Nodo<T> aux = this.inicio;
-        while (aux.getSig() != null) {
+        if (aux != null) {
             if (aux.getDato().equals(dato)) {
                 return true;
+            } else {
+                while (aux.getSig() != null) {
+                    if (aux.getDato().equals(dato)) {
+                        return true;
+                    }
+                    aux = aux.getSig();
+                }
             }
-            aux = aux.getSig();
         }
         return false;
     }
 
     @Override
-    public T obtener(int pos) {
+    public T obtenerPorPos(int pos) {
         int posAux = 0;
         Nodo<T> nodoAux = this.inicio;
         if (pos < this.cant) {
             while (nodoAux.getSig() != null && posAux <= pos) {
                 if (posAux == pos) {
-                    return (T) nodoAux;
+                    return (T) nodoAux.getDato();
                 }
                 nodoAux = nodoAux.getSig();
                 posAux++;
             }
         }
-
+        if (posAux == pos && nodoAux != null) {
+            return (T) nodoAux.getDato();
+        }
         return null;
     }
 
     @Override
-    public int obtener(T dato) {
-        return 0;
-    }
-
-    @Override
     public boolean esVacia() {
-        return false;
+        return this.inicio == null;
     }
 
     @Override
-    public void eliminar(T dato) {
-        Nodo<T> nodoAux = this.inicio;
-        if (this.inicio.getDato().equals(dato)) {
-            this.inicio = this.inicio.getSig();
-        }
-        while (nodoAux.getSig() != null) {
-            if (nodoAux.getSig().getDato().equals(dato)) {
-                nodoAux.setSig(nodoAux.getSig().getSig());
+    public String listaComoTexto() {
+        Nodo<T> aux = this.inicio;
+        String resultado = "";
+        while (aux != null) {
+            if (aux.getSig() != null) {
+                resultado += aux.getDato() + "|";
+            } else {
+                resultado += aux.getDato();
             }
-            nodoAux = nodoAux.getSig();
+            aux = aux.getSig();
         }
-
-    }
-
-    public void imprimir() {
-        Nodo<T> nodoAux = this.inicio;
-        System.out.print("-> [ ");
-        while (nodoAux != null) {
-            System.out.print(nodoAux.getDato());
-            if (nodoAux.getSig() != null) {
-                System.out.print(" , ");
-            }
-            nodoAux = nodoAux.getSig();
-        }
-        System.out.println(" ]");
-    }
-
-    @Override
-    public void eliminar(int pos) {
-
+        return resultado;
     }
 }

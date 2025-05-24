@@ -1,7 +1,6 @@
 package dominio;
 
-public class Ciudad {
-    //String codigo, String nombre
+public class Ciudad implements Comparable<Ciudad> {
     private String codigo;
     private String nombre;
 
@@ -24,5 +23,21 @@ public class Ciudad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Ciudad ciudad = (Ciudad) obj;
+        return this.codigo.equals(ciudad.codigo);
+    }
+
+    @Override
+    public int compareTo(Ciudad ciudad) {
+        return this.codigo.compareTo(ciudad.codigo);
+    }
+
+    @Override
+    public String toString() {
+        return this.codigo + ";" + this.nombre;
     }
 }

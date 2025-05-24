@@ -1,4 +1,4 @@
-﻿package TAD.Lista;
+package TAD.Lista;
 
 public class Nodo<T>{
     private T dato;

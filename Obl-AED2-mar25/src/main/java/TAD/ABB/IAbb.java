@@ -1,14 +1,10 @@
 package TAD.ABB;
 
+import TAD.Lista.Lista;
+
 public interface IAbb<T> {
     void insertar(T dato);
-
-    boolean pertenece(T dato);
-
-    void imprimirAsc();
-
-    void imprimirDsc();
-
-    void eliminarMinimo();
-
+    Lista<String> generarListaAsc();
+    Lista<String> generarListaDesc();
+    T buscar(T dato);
 }
